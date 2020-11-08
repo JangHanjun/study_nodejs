@@ -3,10 +3,12 @@ import morgan from "morgan";  // 로그를 남겨줌
 import helmet from "helmet";  // 기초 보안 담당
 import cookieParser from "cookie-parser";  // 쿠키를 다룰 수 있음
 import bodyParser from "body-parser";      // form데이터를 서버로 받아와서 활용가능
+import { localsMiddleware } from "./middlewares";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
+
 const app = express();
 
 // middleware로 로그인 여부 캐치, 접속에 대한 로그를 작성 등 
@@ -19,6 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(helmet());
 app.use(morgan("dev"));
+
+app.use(localsMiddleware);
 
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
